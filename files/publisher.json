@@ -1,0 +1,20 @@
+[
+    {
+        "publisherId": "abcdef",
+        "name": "Penguin Random House",
+        "street": "Oxford 2, 5",
+        "email": "penguin@gmail.com"
+    },
+    {
+        "publisherId": "qwerty",
+        "name": "Hachette Livre",
+        "street": "Carey Road 122",
+        "email": "hachette@gmail.com"
+    },
+    {
+        "publisherId": "asdfgh",
+        "name": "Springer Nature",
+        "street": "Hawley Ave 53",
+        "email": "springer@gmail.com"
+    }
+]

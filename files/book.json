@@ -1,0 +1,34 @@
+[
+    {
+        "bookId": "123",
+        "name": "The fellowship of the ring",
+        "genre": "fiction",
+        "isbn": "32-3232-3232-32",
+        "authorId": "123",
+        "publisherId": "abcdef"
+    },
+    {
+        "bookId": "345",
+        "name": "Les Miserables",
+        "genre": "drama",
+        "isbn": "65-43-656543-343",
+        "authorId": "456",
+        "publisherId": "qwerty"
+    },
+    {
+        "bookId": "456",
+        "name": "The Hunchback of Notre-Dame",
+        "genre": "drama",
+        "isbn": "864-32324-3242-32",
+        "authorId": "456",
+        "publisherId": "asdfgh"
+    },
+    {
+        "bookId": "567",
+        "name": "Hamlet",
+        "genre": "drama, tragedy",
+        "isbn": "121-2131-231-232",
+        "authorId": "789",
+        "publisherId": "abcdef"
+    }
+]

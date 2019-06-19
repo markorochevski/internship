@@ -1,0 +1,19 @@
+[
+    {
+        "authorId": "123",
+        "name": "J. R. R. Tolkien",
+        "dateOfBirth": "1950-09-04"
+    },
+
+    {
+        "authorId": "456",
+        "name": "Victor Hugo",
+        "dateOfBirth": "1932-10-11"
+    },
+
+    {
+        "authorId": "789",
+        "name": "William Shakespeare",
+        "dateOfBirth": "1575-03-08"
+    }
+]
