@@ -1,0 +1,20 @@
+{
+  "name": "doxteam-internship",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "rm -rf ./server/dst",
+    "build": "./node_modules/.bin/tsc --p ./server/src/",
+    "start": "npm run build && node ./server/dst/index.js"
+  },
+  "author": "Marko Rochevski",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.0",
+    "typescript": "^3.5.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
