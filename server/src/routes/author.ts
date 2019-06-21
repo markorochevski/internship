@@ -1,44 +1,47 @@
 import { Router, Request, Response } from "express";
-import { Author } from "../models/author";
+import { AuthorManager } from "../models/author";
 import * as bodyParser from "body-parser";
+import * as assertInput from "../assert-input";
 
-const authorRouter = Router();
+const route = Router();
 
-authorRouter.get("/",
+route.get("/",
     async (req: Request, res: Response) => {
         console.log("Route GET /author/");
-        const data = await new Author().getAllAuthors();
+        const data = await new AuthorManager().getAllAuthors();
         res.send(data);
     });
 
-authorRouter.get("/:authorId",
+route.get("/:authorId",
     async (req: Request, res: Response) => {
         console.log("Route GET /author/:authorId");
-        const data = await new Author().getAuthor(req.params.authorId);
+        const data = await new AuthorManager().getAuthor(req.params.authorId);
         res.send(data);
     });
 
-authorRouter.delete("/:authorId",
+route.delete("/:authorId",
     async (req: Request, res: Response) => {
         console.log("Route DELETE /author/:authorId");
-        const data = await new Author().deleteAuthor(req.params.authorId);
+        const data = await new AuthorManager().deleteAuthor(req.params.authorId);
         res.send(data);
     });
 
-authorRouter.post("/",
+route.post("/",
     bodyParser.json(),
+    assertInput.bodyHas("name", "dateOfBirth"),
     async (req: Request, res: Response) => {
         console.log("Route POST /author/");
-        const data = await new Author().addAuthor(req.body);
+        const data = await new AuthorManager().addAuthor(req.body);
         res.send(data);
     });
 
-authorRouter.put("/:authorId",
+route.put("/:authorId",
     bodyParser.json(),
+    assertInput.bodyHas("name", "dateOfBirth"),
     async (req: Request, res: Response) => {
         console.log("Route PUT /author/:authorId");
-        const data = await new Author().updateAuthor(req.params.authorId, req.body);
+        const data = await new AuthorManager().updateAuthor(req.params.authorId, req.body);
         res.send(data);
     });
 
-export { authorRouter };
+export { route };

@@ -1,44 +1,47 @@
 import { Router, Request, Response } from "express";
-import { Publisher } from "../models/publisher";
+import { PublisherManager } from "../models/publisher";
 import * as bodyParser from "body-parser";
+import * as assertInput from "../assert-input";
 
-const publisherRouter = Router();
+const route = Router();
 
-publisherRouter.get("/",
+route.get("/",
     async (req: Request, res: Response) => {
         console.log("Route GET /publisher/");
-        const data = await new Publisher().getAllPublishers();
+        const data = await new PublisherManager().getAllPublishers();
         res.send(data);
     });
 
-publisherRouter.get("/:publisherId",
+route.get("/:publisherId",
     async (req: Request, res: Response) => {
         console.log("Route GET /publisher/:publisherId");
-        const data = await new Publisher().getPublisher(req.params.publisherId);
+        const data = await new PublisherManager().getPublisher(req.params.publisherId);
         res.send(data);
     });
 
-publisherRouter.delete("/:publisherId",
+route.delete("/:publisherId",
     async (req: Request, res: Response) => {
         console.log("Route DELETE /publisher/:authorId");
-        const data = await new Publisher().deletePublisher(req.params.publisherId);
+        const data = await new PublisherManager().deletePublisher(req.params.publisherId);
         res.send(data);
     });
 
-publisherRouter.post("/",
+route.post("/",
     bodyParser.json(),
+    assertInput.bodyHas("name", "street", "email"),
     async (req: Request, res: Response) => {
         console.log("Route POST /publisher/");
-        const data = await new Publisher().addPublisher(req.body);
+        const data = await new PublisherManager().addPublisher(req.body);
         res.send(data);
     });
 
-publisherRouter.put("/:publisherId",
+route.put("/:publisherId",
     bodyParser.json(),
+    assertInput.bodyHas("name", "street", "email"),
     async (req: Request, res: Response) => {
         console.log("Route PUT /publisher/:publisherId");
-        const data = await new Publisher().updatePublisher(req.params.publisherId, req.body);
+        const data = await new PublisherManager().updatePublisher(req.params.publisherId, req.body);
         res.send(data);
     });
 
-export { publisherRouter };
+export { route };

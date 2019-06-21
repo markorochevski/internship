@@ -1,44 +1,47 @@
 import { Router, Request, Response } from "express";
-import { Book } from "../models/book";
+import { BookManager } from "../models/book";
 import * as bodyParser from "body-parser";
+import * as assertInput from "../assert-input";
 
-const bookRouter = Router();
+const route = Router();
 
-bookRouter.get("/",
+route.get("/",
     async (req: Request, res: Response) => {
         console.log("Route GET /book/");
-        const data = await new Book().getAllBooks();
+        const data = await new BookManager().getAllBooks();
         res.send(data);
     });
 
-bookRouter.get("/:bookId",
+route.get("/:bookId",
     async (req: Request, res: Response) => {
         console.log("Route GET /book/:bookId");
-        const data = await new Book().getBook(req.params.bookId);
+        const data = await new BookManager().getBook(req.params.bookId);
         res.send(data);
     });
 
-bookRouter.delete("/:bookId",
+route.delete("/:bookId",
     async (req: Request, res: Response) => {
         console.log("Route DELETE /book/:bookId");
-        const data = await new Book().deleteBook(req.params.bookId);
+        const data = await new BookManager().deleteBook(req.params.bookId);
         res.send(data);
     });
 
-bookRouter.post("/",
+route.post("/",
     bodyParser.json(),
+    assertInput.bodyHas("name", "genre", "isbn", "authorId", "publisherId"),
     async (req: Request, res: Response) => {
         console.log("Route POST /book/");
-        const data = await new Book().addBook(req.body);
+        const data = await new BookManager().addBook(req.body);
         res.send(data);
     });
 
-bookRouter.put("/:bookId",
+route.put("/:bookId",
     bodyParser.json(),
+    assertInput.bodyHas("name", "genre", "isbn", "authorId", "publisherId"),
     async (req: Request, res: Response) => {
         console.log("Route PUT /book/:bookId");
-        const data = await new Book().updateBook(req.params.bookId, req.body);
+        const data = await new BookManager().updateBook(req.params.bookId, req.body);
         res.send(data);
     });
 
-export { bookRouter };
+export { route };

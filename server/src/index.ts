@@ -2,18 +2,27 @@ import express from "express";
 import * as bodyParser from "body-parser";
 import * as mysql from "mysql";
 import * as fs from "fs";
-import { bookRouter } from "./routes/book";
-import { authorRouter } from "./routes/author";
-import { publisherRouter } from "./routes/publisher";
+import * as path from "path";
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use("/book", bookRouter);
-app.use("/author", authorRouter);
-app.use("/publisher", publisherRouter);
+const entitiesDir = path.join(__dirname, "entities");
+const filesDir = path.join(__dirname, "/../../files");
+const routesDir = path.join(__dirname, "routes");
+const exts = /\.js$/;
+
+fs.readdirSync(routesDir).forEach((file) => {
+    if (file[0] !== '.' && exts.test(file)) {
+        const routePath = path.join(routesDir, file);
+        const routeModule = require(routePath);
+        const usepath = "/" + file.replace(exts, '');
+        console.log('usepath: ', usepath);
+        app.use(usepath, routeModule.route);
+    }
+});
 
 export const connection = mysql.createConnection({
     host: "localhost",
@@ -36,8 +45,8 @@ connection.connect((err) => {
             throw e;
         }
         console.log("Database created!");
-        createTables(__dirname + "/entities");
-        fillTables(__dirname + "/../../files");
+        createTables(entitiesDir);
+        fillTables(filesDir);
     });
 });
 
@@ -45,14 +54,15 @@ app.listen(5000, () => {
     console.log("Server running on port 5000!");
 });
 
-function createTables(path: string) {
-    fs.readdir(path, (err, files) => {
+function createTables(dirPath: string) {
+    fs.readdir(dirPath, (err, files) => {
         if (err) {
             console.log(err);
             throw err;
         }
         files.forEach(file => {
-            const tableDefinition = require(path + "/" + file).tableDefinition;
+            const filePath = path.join(dirPath, file);
+            const tableDefinition = require(filePath).tableDefinition;
             const entityName = file.split(".")[0];
             let query = `CREATE TABLE IF NOT EXISTS bookstore.${entityName} (`;
             for (const column of tableDefinition) {
@@ -71,15 +81,15 @@ function createTables(path: string) {
     });
 }
 
-function fillTables(path: string) {
+function fillTables(dirPath: string) {
     if (fillTable) {
-        fs.readdir(path, (err, files) => {
+        fs.readdir(dirPath, (err, files) => {
             if (err) {
-                console.log("Can not read directory ", path);
+                console.log("Can not read directory ", dirPath);
                 throw err;
             }
             files.forEach(file => {
-                const filePath = path + "/" + file;
+                const filePath = path.join(dirPath, file);
                 const entityName = file.split(".")[0];
                 console.log("Reading file ", filePath);
                 fs.readFile(filePath, "utf8", (e, data) => {

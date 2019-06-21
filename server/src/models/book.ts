@@ -1,9 +1,10 @@
 import { connection } from "../index";
+import { Book } from "../entities/book";
 import * as uuid from "uuid";
 
-export class Book {
+export class BookManager {
 
-    public getAllBooks() {
+    public getAllBooks(): Promise<Book[]> {
         return new Promise((resolve, reject) => {
             console.log("Get all books");
             const query = "SELECT * FROM bookstore.book";
@@ -18,7 +19,7 @@ export class Book {
         });
     }
 
-    public getBook(bookId: string) {
+    public getBook(bookId: string): Promise<Book> {
         return new Promise((resolve, reject) => {
             console.log("Get book ", bookId);
             const query = `SELECT * FROM bookstore.author WHERE bookId = '${bookId}'`;
@@ -34,7 +35,7 @@ export class Book {
     }
 
 
-    public deleteBook(bookId: string) {
+    public deleteBook(bookId: string): Promise<{ done: true }> {
         return new Promise((resolve, reject) => {
             console.log("Delete book ", bookId);
             const query = `DELETE FROM bookstore.book WHERE bookId = '${bookId}'`;
@@ -48,7 +49,7 @@ export class Book {
         });
     }
 
-    public addBook(book: any) {
+    public addBook(book: Partial<Book>): Promise<{ done: true }> {
         return new Promise((resolve, reject) => {
             console.log("Add book: ", book);
             const bookId = uuid.v4();
@@ -64,7 +65,7 @@ export class Book {
         });
     }
 
-    public updateBook(bookId: string, book: any) {
+    public updateBook(bookId: string, book: Partial<Book>): Promise<{ done: true }> {
         return new Promise((resolve, reject) => {
             console.log("Update book ", bookId);
             const query = `UPDATE bookstore.book SET name='${book.name}', genre='${book.genre}', isbn='${book.isbn}' WHERE bookId='${bookId}'`;

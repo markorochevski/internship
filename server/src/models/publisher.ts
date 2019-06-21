@@ -1,9 +1,10 @@
 import { connection } from "../index";
+import { Publisher } from "../entities/publisher";
 import * as uuid from "uuid";
 
-export class Publisher {
+export class PublisherManager {
 
-    public getAllPublishers() {
+    public getAllPublishers(): Promise<Publisher[]> {
         return new Promise((resolve, reject) => {
             console.log("Get all publishers");
             const query = "SELECT * FROM bookstore.publisher";
@@ -18,7 +19,7 @@ export class Publisher {
         });
     }
 
-    public getPublisher(publisherId: string) {
+    public getPublisher(publisherId: string): Promise<Publisher> {
         return new Promise((resolve, reject) => {
             console.log("Get publisher ", publisherId);
             const query = `SELECT * FROM bookstore.publisher WHERE publisherId='${publisherId}'`;
@@ -34,7 +35,7 @@ export class Publisher {
     }
 
 
-    public deletePublisher(publisherId: string) {
+    public deletePublisher(publisherId: string): Promise<{ done: true }> {
         return new Promise((resolve, reject) => {
             console.log("Delete publisher: ", publisherId);
             const query = `DELETE FROM bookstore.publisher WHERE publisherId='${publisherId}'`;
@@ -48,7 +49,7 @@ export class Publisher {
         });
     }
 
-    public addPublisher(publisher: any) {
+    public addPublisher(publisher: Partial<Publisher>): Promise<{ done: true }> {
         return new Promise((resolve, reject) => {
             console.log("Add publisher: ", publisher);
             const publisherId = uuid.v4();
@@ -64,7 +65,7 @@ export class Publisher {
         });
     }
 
-    public updatePublisher(publisherId: string, publisher: any) {
+    public updatePublisher(publisherId: string, publisher: Partial<Publisher>): Promise<{ done: true }> {
         return new Promise((resolve, reject) => {
             console.log("Update publisher: ", publisherId);
             const query = `UPDATE bookstore.publisher SET name='${publisher.name}', street='${publisher.street}', email='${publisher.email}' WHERE publisherId='${publisherId}'`;

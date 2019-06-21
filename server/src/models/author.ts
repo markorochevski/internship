@@ -1,9 +1,10 @@
 import { connection } from "../index";
+import { Author } from "../entities/author";
 import * as uuid from "uuid";
 
-export class Author {
+export class AuthorManager {
 
-    public getAllAuthors() {
+    public getAllAuthors(): Promise<Author[]> {
         return new Promise((resolve, reject) => {
 
             console.log("Get all authors");
@@ -19,7 +20,7 @@ export class Author {
         })
     }
 
-    public getAuthor(authorId: string) {
+    public getAuthor(authorId: string): Promise<Author> {
         return new Promise((resolve, reject) => {
             console.log("Get author ", authorId);
             const query = `SELECT * FROM bookstore.author WHERE authorId = '${authorId}'`;
@@ -35,7 +36,7 @@ export class Author {
     }
 
 
-    public deleteAuthor(authorId: string) {
+    public deleteAuthor(authorId: string): Promise<{ done: true }> {
         return new Promise((resolve, reject) => {
             console.log("Delete author ", authorId);
             const query = `DELETE FROM bookstore.author WHERE authorId = '${authorId}'`;
@@ -49,7 +50,7 @@ export class Author {
         });
     }
 
-    public addAuthor(author: any) {
+    public addAuthor(author: Partial<Author>): Promise<{ done: true }> {
         return new Promise((resolve, reject) => {
             console.log("Add author ", author);
             const authorId = uuid.v4();
@@ -64,10 +65,10 @@ export class Author {
         });
     }
 
-    public updateAuthor(authorId: string, author: any) {
+    public updateAuthor(authorId: string, author: Partial<Author>): Promise<{ done: true }> {
         return new Promise((resolve, reject) => {
             console.log("Update author ", authorId);
-            const query = `UPDATE bookstore.author SET name = '${author.name}', dateOfBirth = '${author.dateOfBirth}' WHERE authorId = '${authorId}'`;
+            const query = `UPDATE bookstore.author SET name='${author.name}', dateOfBirth='${author.dateOfBirth}' WHERE authorId='${authorId}'`;
             connection.query(query, (err, res) => {
                 if (err) {
                     console.log("Error updating author: ", err);
@@ -77,5 +78,4 @@ export class Author {
             });
         });
     }
-
 }
