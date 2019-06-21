@@ -1,3 +1,2 @@
-1. Extract routes in separate folder
-2. Create Book, Author, Publisher entities
-3. Create database and tables
+1. CRUD operations for all entities
+2. Routes for all CRUD operations

@@ -15,7 +15,7 @@ app.use("/book", bookRouter);
 app.use("/author", authorRouter);
 app.use("/publisher", publisherRouter);
 
-const connection = mysql.createConnection({
+export const connection = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "database123"
@@ -23,7 +23,6 @@ const connection = mysql.createConnection({
 
 // set to false after table has data
 const fillTable = false;
-
 
 connection.connect((err) => {
     if (err) {
@@ -74,7 +73,6 @@ function createTables(path: string) {
 
 function fillTables(path: string) {
     if (fillTable) {
-
         fs.readdir(path, (err, files) => {
             if (err) {
                 console.log("Can not read directory ", path);
